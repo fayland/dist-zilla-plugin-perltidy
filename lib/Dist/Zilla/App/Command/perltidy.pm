@@ -15,14 +15,10 @@ sub run {
     if ( scalar @$arg and -e $arg->[0] ) {
         $perltidyrc = $arg->[0];
     } else {
-        my $config = $self->config;
-        use Data::Dumper;
-        print STDERR Dumper(\$config) . "\n";
+        my $config = $self->app->config_for('Dist::Zilla::Plugin::PerlTidy');
         $perltidyrc = ( exists $config->{perltidyrc} and -e $config->{perltidyrc} ) ?
             $config->{perltidyrc} : undef;
     }
-
-    print STDERR "use $perltidyrc\n";
 
     # make Perl::Tidy happy
     local @ARGV = ();
