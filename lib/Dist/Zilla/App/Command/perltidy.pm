@@ -55,6 +55,14 @@ Dist::Zilla::App::Command::perltidy - perltidy a dist
     # OR
     $ dzil perltidy .myperltidyrc
 
+=head1 CONFIG
+
+In your global dzil setting (which is '~/.dzil' or '~/.dzil/config'), you can config the
+ perltidyrc file like:
+
+    [PerlTidy]
+    perltidyrc = /home/fayland/somewhere/.perltidyrc
+
 =head1 AUTHOR
 
 Fayland Lam, C<< E<lt>fayland@gmail.comE<gt> >>

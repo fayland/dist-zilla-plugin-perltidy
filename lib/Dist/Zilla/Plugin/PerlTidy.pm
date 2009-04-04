@@ -5,7 +5,7 @@ package Dist::Zilla::Plugin::PerlTidy;
 use Moose;
 with 'Dist::Zilla::Role::FileMunger';
 
-has '_perltidyrc';
+has 'perltidyrc';
 
 sub munge_file {
     my ( $self, $file ) = @_;
@@ -20,11 +20,8 @@ sub munge_perl {
 
     my $content = $file->content;
 
-    my $perltidyrc;
-
-    # XXX? TODO
-    # = ( $self->perltidyrc and exists $self->perltidyrc ) ?
-    #    $self->perltidyrc : undef;
+    my $perltidyrc = ( $self->perltidyrc and exists $self->perltidyrc ) ?
+        $self->perltidyrc : undef;
 
     # make Perl::Tidy happy
     local @ARGV = ();
