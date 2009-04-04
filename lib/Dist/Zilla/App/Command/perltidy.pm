@@ -57,3 +57,12 @@ Dist::Zilla::App::Command::perltidy - perltidy a dist
     $ dzil perltidy .myperltidyrc
 
 =head1 AUTHOR
+
+Fayland Lam, C<< E<lt>fayland@gmail.comE<gt> >>
+
+=head1 COPYRIGHT
+
+Copyright 2008, Fayland Lam.
+
+This program is free software; you may redistribute it and/or modify it under
+the same terms as Perl itself.

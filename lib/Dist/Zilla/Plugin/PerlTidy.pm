@@ -47,7 +47,7 @@ __END__
 
 =head1 NAME
 
-Dist::Zilla::Plugin::PerlTidy - 
+Dist::Zilla::Plugin::PerlTidy - PerlTidy in Dist::Zilla
 
 =head1 SYNOPSIS
 
@@ -59,3 +59,12 @@ Dist::Zilla::Plugin::PerlTidy -
 Make perltidyrc configurable
 
 =head1 AUTHOR
+
+Fayland Lam, C<< E<lt>fayland@gmail.comE<gt> >>
+
+=head1 COPYRIGHT
+
+Copyright 2008, Fayland Lam.
+
+This program is free software; you may redistribute it and/or modify it under
+the same terms as Perl itself.
