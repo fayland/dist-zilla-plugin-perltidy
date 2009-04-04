@@ -14,12 +14,15 @@ sub run {
     my $perltidyrc;
     if ( scalar @$arg and -e $arg->[0] ) {
         $perltidyrc = $arg->[0];
+    } else {
+        my $config = $self->config;
+        use Data::Dumper;
+        print STDERR Dumper(\$config) . "\n";
+        $perltidyrc = ( exists $config->{perltidyrc} and -e $config->{perltidyrc} ) ?
+            $config->{perltidyrc} : undef;
     }
 
-# XXX? TODO
-#    my $config = $self->config;
-#    $perltidyrc = ( exists $config->{perltidyrc} and -e $config->{perltidyrc} ) ?
-#        $config->{perltidyrc} : undef;
+    print STDERR "use $perltidyrc\n";
 
     # make Perl::Tidy happy
     local @ARGV = ();
