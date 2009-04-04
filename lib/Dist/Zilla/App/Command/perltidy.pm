@@ -11,9 +11,14 @@ sub abstract {'perltidy your dist'}
 sub run {
     my ( $self, $opt, $arg ) = @_;
 
+    my $perltidyrc;
+    if ( scalar @$arg and -e $arg->[0] ) {
+        $perltidyrc = $arg->[0];
+    }
+
 # XXX? TODO
 #    my $config = $self->config;
-#    my $perltidyrc = ( exists $config->{perltidyrc} and -e $config->{perltidyrc} ) ?
+#    $perltidyrc = ( exists $config->{perltidyrc} and -e $config->{perltidyrc} ) ?
 #        $config->{perltidyrc} : undef;
 
     # make Perl::Tidy happy
@@ -30,7 +35,7 @@ sub run {
         Perl::Tidy::perltidy(
             source      => $file,
             destination => $tidyfile,
-#            perltidyrc  => $perltidyrc,
+            perltidyrc  => $perltidyrc,
         );
         File::Copy::move( $tidyfile, $file );
     }
@@ -41,4 +46,14 @@ sub run {
 1;
 __END__
 
+=head1 NAME
 
+Dist::Zilla::App::Command::perltidy - perltidy a dist
+
+=head1 SYNOPSIS
+
+    $ dzil perltidy
+    # OR
+    $ dzil perltidy .myperltidyrc
+
+=head1 AUTHOR
