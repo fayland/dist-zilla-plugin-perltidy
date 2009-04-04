@@ -25,16 +25,19 @@ sub run {
     local @ARGV = ();
 
     require Perl::Tidy;
+    require File::Copy;
     require File::Next;
 
     my $files = File::Next::files('.');
     while ( defined( my $file = $files->() ) ) {
         next unless ( $file =~ /\.(t|p[ml])$/ );    # perl file
+        my $tidyfile = $file . '.tdy';
         Perl::Tidy::perltidy(
             source      => $file,
-            destination => $file,
+            destination => $tidyfile,
             perltidyrc  => $perltidyrc,
         );
+        File::Copy::move( $tidyfile, $file );
     }
 
     return 1;
