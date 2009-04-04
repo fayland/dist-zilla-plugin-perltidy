@@ -6,7 +6,7 @@ use warnings;
 # ABSTRACT: perltidy your dist
 use Dist::Zilla::App -command;
 
-sub abstract {'perltidy your dist'}
+sub abstract { 'perltidy your dist' }
 
 sub run {
     my ( $self, $opt, $arg ) = @_;
@@ -23,7 +23,7 @@ sub run {
 
     # make Perl::Tidy happy
     local @ARGV = ();
-    
+
     require Perl::Tidy;
     require File::Copy;
     require File::Next;
