@@ -18,7 +18,6 @@ sub run {
     
     require Perl::Tidy;
     require File::Copy;
-    require File::Next;
     require File::HomeDir;
     require File::Spec;
     
@@ -29,8 +28,7 @@ sub run {
     my $homerc = File::Spec->catfile( File::HomeDir->my_home, '.perltidyrc' );
     $rcfile = $homerc if -e $homerc;
     
-    my $files = File::Next::files('.');
-    while ( defined( my $file = $files->() ) ) {
+    foreach my $file ( $zilla->files->flatten ) {
         next unless ( $file =~ /\.(t|p[ml])$/ );    # perl file
         my $tidyfile = $file . '.tdy';
         Perl::Tidy::perltidy(
