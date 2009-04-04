@@ -25,6 +25,9 @@ sub munge_perl {
     # = ( $self->perltidyrc and exists $self->perltidyrc ) ?
     #    $self->perltidyrc : undef;
 
+    # make Perl::Tidy happy
+    local @ARGV = ();
+
   my $tided;
   require Perl::Tidy;
   Perl::Tidy::perltidy(
