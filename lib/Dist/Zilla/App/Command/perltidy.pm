@@ -11,11 +11,10 @@ sub abstract {'perltidy your dist'}
 sub run {
     my ( $self, $opt, $arg ) = @_;
 
-    my $config = $self->config;
-    my $perltidyrc = ( exists $config->{perltidyrc} and -e $config->{perltidyrc} ) ?
-        $config->{perltidyrc} : undef;
-    use Data::Dumper;
-    print STDERR Dumper(\$config);
+# XXX? TODO
+#    my $config = $self->config;
+#    my $perltidyrc = ( exists $config->{perltidyrc} and -e $config->{perltidyrc} ) ?
+#        $config->{perltidyrc} : undef;
 
     # make Perl::Tidy happy
     local @ARGV = ();
@@ -31,7 +30,7 @@ sub run {
         Perl::Tidy::perltidy(
             source      => $file,
             destination => $tidyfile,
-            perltidyrc  => $perltidyrc,
+#            perltidyrc  => $perltidyrc,
         );
         File::Copy::move( $tidyfile, $file );
     }
