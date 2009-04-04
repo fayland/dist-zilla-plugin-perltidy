@@ -20,15 +20,17 @@ sub munge_perl {
 
   my $content = $file->content;
 
-    my $_perltidyrc = ( $self->_perltidyrc and exists $self->_perltidyrc ) ?
-        $self->_perltidyrc : undef;
+    my $perltidyrc;
+    # XXX? TODO
+    # = ( $self->perltidyrc and exists $self->perltidyrc ) ?
+    #    $self->perltidyrc : undef;
 
   my $tided;
   require Perl::Tidy;
   Perl::Tidy::perltidy(
         source      => \$content,
         destination => \$tided,
-        perltidyrc  => $_perltidyrc,
+        perltidyrc  => $perltidyrc,
     );
 
   $file->content($tided);
@@ -36,16 +38,21 @@ sub munge_perl {
 
 __PACKAGE__->meta->make_immutable;
 no Moose;
-1;
-
 
 1;
 __END__
 
-=pod
+=head1 NAME
 
-=head1 DESCRIPTION
+Dist::Zilla::Plugin::PerlTidy - 
 
-L<Perl::Tidy>
+=head1 SYNOPSIS
 
-=cut
+    # dist.ini
+    [PerlTidy]
+
+=head1 TODO
+
+Make perltidyrc configurable
+
+=head1 AUTHOR
