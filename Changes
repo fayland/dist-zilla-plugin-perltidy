@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-Plugin-PerlTidy
 
+0.04    2009.4.5
+        typo fix
+
 0.03    2009.4.5
         perltidyrc config
 
