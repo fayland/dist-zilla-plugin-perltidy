@@ -21,11 +21,11 @@ sub munge_perl {
     my $content = $file->content;
 
     my $perltidyrc;
-    if ( $self->perltidyrc ) {
-        if ( -e $self->perltidyrc ) {
-            $perltidyrc = $self->perltidyrc;
+    if ( $self->{perltidyrc} ) {
+        if ( -e $self->{perltidyrc} ) {
+            $perltidyrc = $self->{perltidyrc};
         } else {
-            warn 'perltidyrc ' . $self->perltidyrc . " is not found\n";
+            warn 'perltidyrc ' . $self->{perltidyrc} . " is not found\n";
         }
     } elsif ( my $config = $self->zilla->dzil_app->config_for('Dist::Zilla::Plugin::PerlTidy') ) {
         if ( exists $config->{perltidyrc} ) {
