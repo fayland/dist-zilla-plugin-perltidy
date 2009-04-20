@@ -20,8 +20,24 @@ sub munge_perl {
 
     my $content = $file->content;
 
-    my $perltidyrc = ( $self->perltidyrc and exists $self->perltidyrc ) ?
-        $self->perltidyrc : undef;
+    my $perltidyrc;
+    if ( $self->{perltidyrc} ) {
+        if ( -e $self->{perltidyrc} ) {
+            $perltidyrc = $self->{perltidyrc};
+        } else {
+            warn 'perltidyrc ' . $self->{perltidyrc} . " is not found\n";
+        }
+    } elsif ( my $config = $self->zilla->dzil_app->config_for('Dist::Zilla::Plugin::PerlTidy') ) {
+        if ( exists $config->{perltidyrc} ) {
+            if ( -e $config->{perltidyrc} ) {
+                $perltidyrc = $config->{perltidyrc};
+            } else {
+                warn "perltidyrc $config->{perltidyrc} is not found\n";
+            }
+        }
+    }
+    
+    $perltidyrc ||= $ENV{PERLTIDYRC};
 
     # make Perl::Tidy happy
     local @ARGV = ();
@@ -52,9 +68,30 @@ Dist::Zilla::Plugin::PerlTidy - PerlTidy in Dist::Zilla
     # dist.ini
     [PerlTidy]
 
-=head1 TODO
+    # or
+    [PerlTidy]
+    perltidyrc = xt/.perltidyrc
 
-Make perltidyrc configurable
+=head1 perltidyrc
+
+=head2 dist.ini
+
+    [PerlTidy]
+    perltidyrc = xt/.perltidyrc
+
+=head2 dzil config
+
+In your global dzil setting (which is '~/.dzil' or '~/.dzil/config'), you can config the
+ perltidyrc like:
+
+    [PerlTidy]
+    perltidyrc = /home/fayland/somewhere/.perltidyrc
+
+=head2 ENV PERLTIDYRC
+
+If you do not config like above, we will fall back to ENV PERLTIDYRC
+
+    export PERLTIDYRC=/home/fayland/somwhere2/.perltidyrc
 
 =head1 AUTHOR
 
@@ -62,7 +99,7 @@ Fayland Lam, C<< E<lt>fayland@gmail.comE<gt> >>
 
 =head1 COPYRIGHT
 
-Copyright 2008, Fayland Lam.
+Copyright 2009, Fayland Lam.
 
 This program is free software; you may redistribute it and/or modify it under
 the same terms as Perl itself.
