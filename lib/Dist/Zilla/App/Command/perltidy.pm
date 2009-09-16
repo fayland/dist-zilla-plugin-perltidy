@@ -8,18 +8,20 @@ use Dist::Zilla::App -command;
 
 sub abstract { 'perltidy your dist' }
 
-sub run {
+sub execute {
     my ( $self, $opt, $arg ) = @_;
 
     my $perltidyrc;
     if ( scalar @$arg and -e $arg->[0] ) {
         $perltidyrc = $arg->[0];
-    } else {
+    }
+    else {
         my $config = $self->app->config_for('Dist::Zilla::Plugin::PerlTidy');
         if ( exists $config->{perltidyrc} ) {
             if ( -e $config->{perltidyrc} ) {
                 $perltidyrc = $config->{perltidyrc};
-            } else {
+            }
+            else {
                 warn "perltidyrc $config->{perltidyrc} is not found\n";
             }
         }

@@ -5,7 +5,7 @@ package Dist::Zilla::Plugin::PerlTidy;
 use Moose;
 with 'Dist::Zilla::Role::FileMunger';
 
-has 'perltidyrc';
+has 'perltidyrc' => ( is => 'rw' );
 
 sub munge_file {
     my ( $self, $file ) = @_;
@@ -27,7 +27,8 @@ sub munge_perl {
         } else {
             warn 'perltidyrc ' . $self->{perltidyrc} . " is not found\n";
         }
-    } elsif ( my $config = $self->zilla->dzil_app->config_for('Dist::Zilla::Plugin::PerlTidy') ) {
+    } elsif ( my $config =
+        $self->zilla->dzil_app->config_for('Dist::Zilla::Plugin::PerlTidy') ) {
         if ( exists $config->{perltidyrc} ) {
             if ( -e $config->{perltidyrc} ) {
                 $perltidyrc = $config->{perltidyrc};
@@ -36,7 +37,7 @@ sub munge_perl {
             }
         }
     }
-    
+
     $perltidyrc ||= $ENV{PERLTIDYRC};
 
     # make Perl::Tidy happy

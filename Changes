@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-Plugin-PerlTidy
 
+0.05    2009.09.16
+        for the new dzil
+
 0.04    2009.4.5
         typo fix
 
