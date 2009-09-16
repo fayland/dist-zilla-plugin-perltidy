@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-Plugin-PerlTidy
 
+0.06    2009.09.16
+        fix PkgVersion by dos2unix
+
 0.05    2009.09.16
         for the new dzil
 
