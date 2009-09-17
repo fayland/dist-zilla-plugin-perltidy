@@ -51,7 +51,6 @@ sub execute {
 }
 
 1;
-__END__
 
 =head1 SYNOPSIS
 
