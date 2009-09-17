@@ -67,7 +67,7 @@ Dist::Zilla::App::Command::perltidy - perltidy a dist
 
 =head2 dzil config
 
-In your global dzil setting (which is '~/.dzil' or '~/.dzil/config'), you can config the
+In your global dzil setting (which is '~/.dzil' or '~/.dzil/config.ini'), you can config the
  perltidyrc like:
 
     [PerlTidy]
