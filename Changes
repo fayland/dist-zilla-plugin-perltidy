@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-Plugin-PerlTidy
 
+0.08    2009.09.17
+        fix duplication POD
+
 0.07    2009.09.17
         fix as '~/.dzil/config.ini' in POD (kentfredric)
 
