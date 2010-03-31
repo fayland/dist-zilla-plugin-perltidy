@@ -1,5 +1,9 @@
 Revision history for Dist-Zilla-Plugin-PerlTidy
 
+0.08_01 2010.03.31
+        fix for Dist::Zilla 2's removal of dzil_app (gardnerm)
+        additional POD (gardnerm)
+
 0.08    2009.09.17
         fix duplication POD
 
