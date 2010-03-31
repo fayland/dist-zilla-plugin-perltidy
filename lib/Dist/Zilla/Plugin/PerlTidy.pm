@@ -7,15 +7,24 @@ with 'Dist::Zilla::Role::FileMunger';
 
 has 'perltidyrc' => ( is => 'rw' );
 
+=method munge_file
+
+Implements the required munge_file method for the
+L<Dist::Zilla::Role::FileMunger> role, munging each Perl file it finds.
+Files whose names do not end in C<.pm>, C<.pl>, or C<.t>, or whose contents
+do not begin with C<#!perl> are left alone.
+
+=cut
+
 sub munge_file {
     my ( $self, $file ) = @_;
 
-    return $self->munge_perl($file) if $file->name    =~ /\.(?:pm|pl|t)$/i;
-    return $self->munge_perl($file) if $file->content =~ /^#!perl(?:$|\s)/;
+    return $self->_munge_perl($file) if $file->name    =~ /\.(?:pm|pl|t)$/i;
+    return $self->_munge_perl($file) if $file->content =~ /^#!perl(?:$|\s)/;
     return;
 }
 
-sub munge_perl {
+sub _munge_perl {
     my ( $self, $file ) = @_;
 
     my $content = $file->content;
@@ -26,15 +35,6 @@ sub munge_perl {
             $perltidyrc = $self->{perltidyrc};
         } else {
             warn 'perltidyrc ' . $self->{perltidyrc} . " is not found\n";
-        }
-    } elsif ( my $config =
-        $self->zilla->dzil_app->config_for('Dist::Zilla::Plugin::PerlTidy') ) {
-        if ( exists $config->{perltidyrc} ) {
-            if ( -e $config->{perltidyrc} ) {
-                $perltidyrc = $config->{perltidyrc};
-            } else {
-                warn "perltidyrc $config->{perltidyrc} is not found\n";
-            }
         }
     }
 
@@ -74,14 +74,6 @@ no Moose;
 
     [PerlTidy]
     perltidyrc = xt/.perltidyrc
-
-=head3 dzil config
-
-In your global dzil setting (which is '~/.dzil' or '~/.dzil/config.ini'), you can config the
- perltidyrc like:
-
-    [PerlTidy]
-    perltidyrc = /home/fayland/somewhere/.perltidyrc
 
 =head3 ENV PERLTIDYRC
 
