@@ -8,5 +8,5 @@ BEGIN {
 }
 
 diag(
-"Testing Dist::Zilla::Plugin::PerlTidy $Dist::Zilla::Plugin::PerlTidy::VERSION, Perl $], $^X"
+    "Testing Dist::Zilla::Plugin::PerlTidy $Dist::Zilla::Plugin::PerlTidy::VERSION, Perl $], $^X"
 );

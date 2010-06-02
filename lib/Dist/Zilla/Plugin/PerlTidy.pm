@@ -5,7 +5,7 @@ package Dist::Zilla::Plugin::PerlTidy;
 use Moose;
 with 'Dist::Zilla::Role::FileMunger';
 
-has 'perltidyrc' => ( is => 'ro', isa => 'Maybe[Str]' );
+has 'perltidyrc' => ( is => 'ro' );
 
 =method munge_file
 
@@ -30,12 +30,12 @@ sub _munge_perl {
     my $source = $file->content;
 
     my $perltidyrc;
-    if ( $self->{perltidyrc} ) {
-        if ( -r $self->{perltidyrc} ) {
-            $perltidyrc = $self->{perltidyrc};
-        }
-        else {
-            $self->log_fatal([ "specified perltidyrc is not readable: %s", $perltidyrc ]);
+    if ( defined $self->perltidyrc ) {
+        if ( -r $self->perltidyrc ) {
+            $perltidyrc = $self->perltidyrc;
+        } else {
+            $self->log_fatal(
+                [ "specified perltidyrc is not readable: %s", $perltidyrc ] );
         }
     }
 
@@ -47,7 +47,7 @@ sub _munge_perl {
     Perl::Tidy::perltidy(
         source      => \$source,
         destination => \$destination,
-        ( $perltidyrc ? ( perltidyrc  => $perltidyrc ) : () ),
+        ( $perltidyrc ? ( perltidyrc => $perltidyrc ) : () ),
     );
 
     $file->content($destination);

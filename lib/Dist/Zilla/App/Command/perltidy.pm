@@ -6,25 +6,26 @@ use warnings;
 # ABSTRACT: perltidy your dist
 use Dist::Zilla::App -command;
 
-sub abstract { 'perltidy your dist' }
+sub abstract {'perltidy your dist'}
 
 sub execute {
     my ( $self, $opt, $arg ) = @_;
 
+    # use perltidyrc from command line or from config
     my $perltidyrc;
     if ( scalar @$arg and -r $arg->[0] ) {
         $perltidyrc = $arg->[0];
-    }
-    else {
-        my $config = $self->app->config_for('Dist::Zilla::Plugin::PerlTidy');
-        if ( exists $config->{perltidyrc} ) {
-            if ( -r $config->{perltidyrc} ) {
-                $perltidyrc = $config->{perltidyrc};
-            }
-            else {
-                $self->log_fatal([ "specified perltidyrc is not readable: %s", $perltidyrc ]);
-            }
+    } else {
+        my $plugin = $self->zilla->plugin_named('PerlTidy');
+        if ( defined $plugin->perltidyrc ) {
+            $perltidyrc = $plugin->perltidyrc;
         }
+    }
+
+    # Verify that file specified is readable
+    unless ( $perltidyrc and -r $perltidyrc ) {
+        $self->zilla->log_fatal(
+            [ "specified perltidyrc is not readable: %s", $perltidyrc ] );
     }
 
     # make Perl::Tidy happy
