@@ -5,7 +5,7 @@ package Dist::Zilla::Plugin::PerlTidy;
 use Moose;
 with 'Dist::Zilla::Role::FileMunger';
 
-has 'perltidyrc' => ( is => 'rw' );
+has 'perltidyrc' => ( is => 'ro', isa => 'Maybe[Str]' );
 
 =method munge_file
 
@@ -27,31 +27,30 @@ sub munge_file {
 sub _munge_perl {
     my ( $self, $file ) = @_;
 
-    my $content = $file->content;
+    my $source = $file->content;
 
     my $perltidyrc;
     if ( $self->{perltidyrc} ) {
-        if ( -e $self->{perltidyrc} ) {
+        if ( -r $self->{perltidyrc} ) {
             $perltidyrc = $self->{perltidyrc};
-        } else {
-            warn 'perltidyrc ' . $self->{perltidyrc} . " is not found\n";
+        }
+        else {
+            $self->log_fatal([ "specified perltidyrc is not readable: %s", $perltidyrc ]);
         }
     }
-
-    $perltidyrc ||= $ENV{PERLTIDYRC};
 
     # make Perl::Tidy happy
     local @ARGV = ();
 
-    my $tided;
+    my $destination;
     require Perl::Tidy;
     Perl::Tidy::perltidy(
-        source      => \$content,
-        destination => \$tided,
-        perltidyrc  => $perltidyrc,
+        source      => \$source,
+        destination => \$destination,
+        ( $perltidyrc ? ( perltidyrc  => $perltidyrc ) : () ),
     );
 
-    $file->content($tided);
+    $file->content($destination);
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -59,7 +58,7 @@ no Moose;
 
 1;
 
-=head1 SYNOPSIS
+=head2 SYNOPSIS
 
     # dist.ini
     [PerlTidy]
@@ -68,15 +67,13 @@ no Moose;
     [PerlTidy]
     perltidyrc = xt/.perltidyrc
 
-=head2 perltidyrc
 
-=head3 dist.ini
+=head2 DEFAULTS
 
-    [PerlTidy]
-    perltidyrc = xt/.perltidyrc
+If you do not specify a specific perltidyrc in dist.ini it will try to use
+the same defaults as Perl::Tidy.
 
-=head3 ENV PERLTIDYRC
 
-If you do not config like above, we will fall back to ENV PERLTIDYRC
+=head2 SEE ALSO
 
-    export PERLTIDYRC=/home/fayland/somwhere2/.perltidyrc
+L<Perl::Tidy>

@@ -1,5 +1,9 @@
 Revision history for Dist-Zilla-Plugin-PerlTidy
 
+{{$NEXT}}
+	perltidyrc is now resolved using Perl::Tidy defaults if not
+	specified (robinsmidsrod)
+
 0.08_01 2010.03.31
         fix for Dist::Zilla 2's removal of dzil_app (gardnerm)
         additional POD (gardnerm)
@@ -27,4 +31,3 @@ Revision history for Dist-Zilla-Plugin-PerlTidy
 
 0.01    2009.4.4
         First version, released on an unsuspecting world.
-

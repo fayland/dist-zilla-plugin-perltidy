@@ -12,20 +12,19 @@ sub execute {
     my ( $self, $opt, $arg ) = @_;
 
     my $perltidyrc;
-    if ( scalar @$arg and -e $arg->[0] ) {
+    if ( scalar @$arg and -r $arg->[0] ) {
         $perltidyrc = $arg->[0];
     }
     else {
         my $config = $self->app->config_for('Dist::Zilla::Plugin::PerlTidy');
         if ( exists $config->{perltidyrc} ) {
-            if ( -e $config->{perltidyrc} ) {
+            if ( -r $config->{perltidyrc} ) {
                 $perltidyrc = $config->{perltidyrc};
             }
             else {
-                warn "perltidyrc $config->{perltidyrc} is not found\n";
+                $self->log_fatal([ "specified perltidyrc is not readable: %s", $perltidyrc ]);
             }
         }
-        $perltidyrc ||= $ENV{PERLTIDYRC};
     }
 
     # make Perl::Tidy happy
@@ -42,7 +41,7 @@ sub execute {
         Perl::Tidy::perltidy(
             source      => $file,
             destination => $tidyfile,
-            perltidyrc  => $perltidyrc,
+            ( $perltidyrc ? ( perltidyrc => $perltidyrc ) : () ),
         );
         File::Copy::move( $tidyfile, $file );
     }
@@ -52,24 +51,27 @@ sub execute {
 
 1;
 
-=head1 SYNOPSIS
+=head2 SYNOPSIS
 
     $ dzil perltidy
     # OR
     $ dzil perltidy .myperltidyrc
 
-=head2 perltidyrc
+=head2 CONFIGURATION
 
-=head3 dzil config
-
-In your global dzil setting (which is '~/.dzil' or '~/.dzil/config.ini'), you can config the
- perltidyrc like:
+In your global dzil setting (which is '~/.dzil' or '~/.dzil/config.ini'),
+you can config the perltidyrc like:
 
     [PerlTidy]
     perltidyrc = /home/fayland/somewhere/.perltidyrc
 
-=head3 ENV PERLTIDYRC
 
-If you do not config the dzil, we will fall back to ENV PERLTIDYRC
+=head2 DEFAULTS
 
-    export PERLTIDYRC=/home/fayland/somwhere2/.perltidyrc
+If you do not specify a specific perltidyrc in dist.ini it will try to use
+the same defaults as Perl::Tidy.
+
+
+=head2 SEE ALSO
+
+L<Perl::Tidy>
