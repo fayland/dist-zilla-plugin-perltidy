@@ -1,6 +1,6 @@
 Revision history for Dist-Zilla-Plugin-PerlTidy
 
-{{$NEXT}}
+0.09    2010.06.03
 	perltidyrc is now resolved using Perl::Tidy defaults if not
 	specified (robinsmidsrod)
 
