@@ -27,14 +27,14 @@ sub munge_file {
 sub _munge_perl {
     my ( $self, $file ) = @_;
 
-	return if ref($file) eq 'Dist::Zilla::File::FromCode';
     my $source = $file->content;
 
     my $perltidyrc;
     if ( defined $self->perltidyrc ) {
         if ( -r $self->perltidyrc ) {
             $perltidyrc = $self->perltidyrc;
-        } else {
+        }
+        else {
             $self->log_fatal(
                 [ "specified perltidyrc is not readable: %s", $perltidyrc ] );
         }
@@ -51,7 +51,9 @@ sub _munge_perl {
         ( $perltidyrc ? ( perltidyrc => $perltidyrc ) : () ),
     );
 
-    $file->content($destination);
+    ref($file) eq 'Dist::Zilla::File::FromCode'
+      ? $file->code($destination)
+      : $file->content($destination);
 }
 
 __PACKAGE__->meta->make_immutable;
