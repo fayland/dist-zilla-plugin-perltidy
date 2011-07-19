@@ -27,6 +27,7 @@ sub munge_file {
 sub _munge_perl {
     my ( $self, $file ) = @_;
 
+	return if ref($file) eq 'Dist::Zilla::File::FromCode';
     my $source = $file->content;
 
     my $perltidyrc;
