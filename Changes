@@ -1,8 +1,11 @@
 Revision history for Dist-Zilla-Plugin-PerlTidy
 
+0.10    2011.07.20
+        fixes for ref($file) eq 'Dist::Zilla::File::FromCode' (Alexei (RUSSOZ))
+
 0.09    2010.06.03
-	perltidyrc is now resolved using Perl::Tidy defaults if not
-	specified (robinsmidsrod)
+	    perltidyrc is now resolved using Perl::Tidy defaults if not
+	    specified (robinsmidsrod)
 
 0.08_01 2010.03.31
         fix for Dist::Zilla 2's removal of dzil_app (gardnerm)
