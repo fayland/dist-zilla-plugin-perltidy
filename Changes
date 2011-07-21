@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-Plugin-PerlTidy
 
+0.11    2011.07.21
+        reverting to previous patch - ignoring FromCode (Alexei (RUSSOZ))
+
 0.10    2011.07.20
         fixes for ref($file) eq 'Dist::Zilla::File::FromCode' (Alexei (RUSSOZ))
 
