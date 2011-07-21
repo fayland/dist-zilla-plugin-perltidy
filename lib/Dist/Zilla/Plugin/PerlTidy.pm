@@ -27,6 +27,7 @@ sub munge_file {
 sub _munge_perl {
     my ( $self, $file ) = @_;
 
+    return if ref($file) eq 'Dist::Zilla::File::FromCode';
     my $source = $file->content;
 
     my $perltidyrc;
@@ -51,9 +52,7 @@ sub _munge_perl {
         ( $perltidyrc ? ( perltidyrc => $perltidyrc ) : () ),
     );
 
-    ref($file) eq 'Dist::Zilla::File::FromCode'
-      ? $file->code($destination)
-      : $file->content($destination);
+    $file->content($destination);
 }
 
 __PACKAGE__->meta->make_immutable;
