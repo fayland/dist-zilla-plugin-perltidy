@@ -25,7 +25,10 @@ sub execute {
     # Verify that if a file is specified it is readable
     if ( defined $perltidyrc and not -r $perltidyrc ) {
         $self->zilla->log_fatal(
-            [ "specified perltidyrc is not readable: %s ,\nNote: ~ and other shell expansions are not applicable", $perltidyrc ] );
+            [   "specified perltidyrc is not readable: %s ,\nNote: ~ and other shell expansions are not applicable",
+                $perltidyrc
+            ]
+        );
     }
 
     # make Perl::Tidy happy

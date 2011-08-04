@@ -19,25 +19,26 @@ my $bdir = catdir( $tmpdir, '01_unconfigured' );
 
 note explain { root => $root, tmpdir => $tmpdir, bdir => $bdir };
 
-ok( dircopy( $root, $bdir ), "Copied directory to tmpdir" ) or diag explain {
-  args  => [ $root, $bdir ],
-  error => $!,
-};
+ok( dircopy( $root, $bdir ), "Copied directory to tmpdir" )
+    or diag explain {
+    args  => [ $root, $bdir ],
+    error => $!,
+    };
 
 {
-  my $dir = pushd($bdir);
-  my $result;
-  local $@;
-  eval { $result = system( 'dzil', 'perltidy' ); };
-  my $res = $@;
+    my $dir = pushd($bdir);
+    my $result;
+    local $@;
+    eval { $result = system( 'dzil', 'perltidy' ); };
+    my $res = $@;
 
-  is( $result, 0, "perltidy works without a configuration setup!" )
-    or diag explain {
-    '$@'   => $res,
-    '$?'   => $?,
-    '$!'   => $!,
-    result => $result,
-    };
+    is( $result, 0, "perltidy works without a configuration setup!" )
+        or diag explain {
+        '$@'   => $res,
+        '$?'   => $?,
+        '$!'   => $!,
+        result => $result,
+        };
 }
 
 done_testing;
