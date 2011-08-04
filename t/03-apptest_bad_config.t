@@ -33,7 +33,7 @@ ok( dircopy( $root, $bdir ), "Copied directory to tmpdir" )
     my $res = $@;
 
     isnt( $result, 0, "perltidy fails with a bad config path" )
-      and note explain {
+        and note explain {
         '$@'   => $res,
         '$?'   => $?,
         '$!'   => $!,
