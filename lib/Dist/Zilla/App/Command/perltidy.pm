@@ -17,7 +17,7 @@ sub execute {
         $perltidyrc = $arg->[0];
     } else {
         my $plugin = $self->zilla->plugin_named('PerlTidy');
-        if ( defined $plugin->perltidyrc ) {
+        if ( defined $plugin and defined $plugin->perltidyrc ) {
             $perltidyrc = $plugin->perltidyrc;
         }
     }
