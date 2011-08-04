@@ -1,6 +1,6 @@
 Revision history for Dist-Zilla-Plugin-PerlTidy
 
-0.12
+0.12    2011.08.04
         Permit 'dzil perltidy' to work without any configuration at all - kentnl
 
         Permit '[PerlTidy]' to omit a configuration file path and defer to default - kentnl
