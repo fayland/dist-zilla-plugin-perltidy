@@ -1,5 +1,14 @@
 Revision history for Dist-Zilla-Plugin-PerlTidy
 
+0.12
+        Permit 'dzil perltidy' to work without any configuration at all - kentnl
+
+        Permit '[PerlTidy]' to omit a configuration file path and defer to default - kentnl
+
+        Add notices about '~' and co not being expanded in configuration paths - kentnl
+
+        Misc distribution fixes - kentnl
+
 0.11    2011.07.21
         reverting to previous patch - ignoring FromCode (Alexei (RUSSOZ))
 
