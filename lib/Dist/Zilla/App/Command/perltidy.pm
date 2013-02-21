@@ -6,7 +6,30 @@ use warnings;
 # ABSTRACT: perltidy your dist
 use Dist::Zilla::App -command;
 
-sub abstract {'perltidy your dist'}
+sub abstract { 'perltidy your dist' }
+
+my $backends = {
+    vanilla => sub {
+        local @ARGV = ();
+        require Perl::Tidy;
+        return sub {
+            local @ARGV = ();
+            Perl::Tidy::perltidy(@_);
+        };
+    },
+    sweet => sub {
+        local @ARGV = ();
+        require Perl::Tidy::Sweetened;
+        return sub {
+            local @ARGV = ();
+            Perl::Tidy::Sweetened::perltidy(@_);
+        };
+    },
+};
+
+sub opt_spec {
+    [ 'backend|b=s', 'tidy backend to use', { default => 'vanilla' } ];
+}
 
 sub execute {
     my ( $self, $opt, $arg ) = @_;
@@ -31,10 +54,17 @@ sub execute {
         );
     }
 
-    # make Perl::Tidy happy
-    local @ARGV = ();
+    if ( not exists $backends->{ $opt->{backend} } ) {
+        $self->zilla->log_fatal(
+            [
+                "specified backend not known, known backends are: %s ",
+                join q[,], sort keys %{$backends}
+            ]
+        );
+    }
 
-    require Perl::Tidy;
+    my $tidy = $backends->{ $opt->{backend} }->();
+
     require File::Copy;
     require File::Next;
 
@@ -49,7 +79,7 @@ sub execute {
             File::Copy::move( $tidyfile, $file );
             next;
         }
-        Perl::Tidy::perltidy(
+        $tidy->(
             source      => $file,
             destination => $tidyfile,
             ( $perltidyrc ? ( perltidyrc => $perltidyrc ) : () ),
