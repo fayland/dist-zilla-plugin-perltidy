@@ -42,12 +42,19 @@ sub execute {
     while ( defined( my $file = $files->() ) ) {
         next unless ( $file =~ /\.(t|p[ml])$/ );    # perl file
         my $tidyfile = $file . '.tdy';
+        $self->zilla->log_debug(['Tidying %s', $file ]);
+        if ( my $pid = fork() ){
+            waitpid $pid, 0;
+            $self->zilla->log_fatal(['Child exited with nonzero status: %s', $?]) if $? > 0;
+            File::Copy::move( $tidyfile, $file );
+            next;
+        }
         Perl::Tidy::perltidy(
             source      => $file,
             destination => $tidyfile,
             ( $perltidyrc ? ( perltidyrc => $perltidyrc ) : () ),
         );
-        File::Copy::move( $tidyfile, $file );
+        exit 0;
     }
 
     return 1;
