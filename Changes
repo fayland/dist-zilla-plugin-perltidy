@@ -1,5 +1,9 @@
 Revision history for Dist-Zilla-Plugin-PerlTidy
 
+0.13    2012.02.22
+        Add support for alternative tidy backends (Kent Fredric)
+        Fix the excessive production of *.LOG files (Kent Fredric)
+
 0.12    2011.08.04
         Permit 'dzil perltidy' to work without any configuration at all - kentnl
 
