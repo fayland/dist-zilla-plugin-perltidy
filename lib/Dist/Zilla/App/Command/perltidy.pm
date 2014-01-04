@@ -87,7 +87,7 @@ sub execute {
     );
     $rule->file->nonempty;
     $rule->file->not_binary;
-    $rule->file->line_match(qr/\s\n/);
+    # $rule->file->line_match(qr/\s\n/);
 
     my $next = $rule->iter(
       '.' => {
