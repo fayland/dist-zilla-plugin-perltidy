@@ -19,7 +19,7 @@ do not begin with C<#!perl> are left alone.
 sub munge_file {
     my ( $self, $file ) = @_;
 
-    return $self->_munge_perl($file) if $file->name    =~ /\.(?:pm|pl|t)$/i;
+    return $self->_munge_perl($file) if $file->name =~ /\.(?:pm|pl|t)$/i;
     return $self->_munge_perl($file) if $file->content =~ /^#!perl(?:$|\s)/;
     return;
 }
