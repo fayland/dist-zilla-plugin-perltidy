@@ -5,6 +5,8 @@ use warnings;
 
 # ABSTRACT: perltidy your dist
 use Dist::Zilla::App -command;
+use Path::Iterator::Rule;
+use File::Copy;
 
 sub abstract { 'perltidy your dist' }
 
@@ -65,11 +67,36 @@ sub execute {
 
     my $tidy = $backends->{ $opt->{backend} }->();
 
-    require File::Copy;
-    require File::Next;
+    # RT 91288
+    # copied from https://metacpan.org/source/KENTNL/Dist-Zilla-PluginBundle-Author-KENTNL-2.007000/utils/strip_eol.pl
+    my $rule = Path::Iterator::Rule->new();
+    $rule->skip_vcs;
+    $rule->skip(
+      sub {
+        return if not -d $_;
+        if ( $_[1] =~ qr/^\.build$/ ) {
+            $self->zilla->log_debug('Ignoring .build');
+            return 1;
+        }
+        if ( $_[1] =~ qr/^[A-Za-z].*-[0-9.]+(-TRIAL)?$/ ) {
+            $self->zilla->log_debug('Ignoring dzil build tree');
+            return 1;
+        }
+        return;
+      }
+    );
+    $rule->file->nonempty;
+    $rule->file->not_binary;
+    $rule->file->line_match(qr/\s\n/);
 
-    my $files = File::Next::files('.');
-    while ( defined( my $file = $files->() ) ) {
+    my $next = $rule->iter(
+      '.' => {
+        follow_symlinks => 0,
+        sorted          => 0,
+      }
+    );
+
+    while ( my $file = $next->() ) {
         next unless ( $file =~ /\.(t|p[ml])$/ );    # perl file
         my $tidyfile = $file . '.tdy';
         $self->zilla->log_debug(['Tidying %s', $file ]);
