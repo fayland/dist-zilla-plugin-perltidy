@@ -13,6 +13,11 @@ use File::Temp qw( tempdir );
 use File::Copy::Recursive qw( dircopy );
 use File::pushd qw( pushd );
 
+{
+    my $result = eval { system( 'dzil', '-v' ); };
+    plan skip_all => "Skip when dzil is not call-able.\n" if $result eq '-1';
+}
+
 my $root = catdir( rel2abs($FindBin::Bin), 'apptest', '01_unconfigured' );
 my $tmpdir = tempdir( CLEANUP => 1 );
 my $bdir = catdir( $tmpdir, '01_unconfigured' );

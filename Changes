@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-Plugin-PerlTidy
 
+0.15    2014-01-22
+        fix tests
+
 0.14    2014.01.04
         command perltidy ignoring .build and Module-VERSION (RT 91288, patches from KENTNL)
 
