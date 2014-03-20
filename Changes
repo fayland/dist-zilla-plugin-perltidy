@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-Plugin-PerlTidy
 
+0.16    2014-03-21
+        do not try to read binary file
+
 0.15    2014-01-22
         fix tests
 
