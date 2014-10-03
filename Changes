@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-Plugin-PerlTidy
 
+0.17    2014-10-03
+        Fix to prevent certain Perl files from being skipped (by Steven Lee)
+
 0.16    2014-03-21
         do not try to read binary file
 
