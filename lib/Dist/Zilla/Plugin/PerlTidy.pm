@@ -29,6 +29,8 @@ sub _munge_perl {
     my ( $self, $file ) = @_;
 
     return if ref($file) eq 'Dist::Zilla::File::FromCode';
+    return if $file->name and $file->name eq 't/00-compile.t'; # simply skip Dist::Zilla::Plugin::Test::Compile (RT 88601)
+
     my $source = $file->content;
 
     my $perltidyrc;

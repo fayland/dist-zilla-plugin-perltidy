@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-Plugin-PerlTidy
 
+0.18    2014-10-19
+        simply skip Dist::Zilla::Plugin::Test::Compile (RT 88601)
+
 0.17    2014-10-03
         Fix to prevent certain Perl files from being skipped (by Steven Lee)
 
