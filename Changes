@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-Plugin-PerlTidy
 
+0.19    2014-10-31
+        use FileFinderUser to skip Build.PL/Makefile.PL etc.
+
 0.18    2014-10-19
         simply skip Dist::Zilla::Plugin::Test::Compile (RT 88601)
 

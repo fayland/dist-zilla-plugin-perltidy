@@ -3,7 +3,12 @@ package Dist::Zilla::Plugin::PerlTidy;
 # ABSTRACT: PerlTidy in Dist::Zilla
 
 use Moose;
-with 'Dist::Zilla::Role::FileMunger';
+with (
+    'Dist::Zilla::Role::FileMunger',
+    'Dist::Zilla::Role::FileFinderUser' => {
+        default_finders => [ ':InstallModules', ':ExecFiles', ':TestFiles' ],
+    },
+);
 
 has 'perltidyrc' => ( is => 'ro' );
 
@@ -15,6 +20,12 @@ Files whose names do not end in C<.pm>, C<.pl>, or C<.t>, or whose contents
 do not begin with C<#!perl> are left alone.
 
 =cut
+
+sub munge_files {
+    my ($self) = @_;
+
+    $self->munge_file($_) for @{ $self->found_files };
+}
 
 sub munge_file {
     my ( $self, $file ) = @_;
