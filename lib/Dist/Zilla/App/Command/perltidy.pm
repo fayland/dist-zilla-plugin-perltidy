@@ -111,6 +111,7 @@ sub execute {
         $tidy->(
             source      => $file,
             destination => $tidyfile,
+            argv        => [qw( -nst -nse )],
             ( $perltidyrc ? ( perltidyrc => $perltidyrc ) : () ),
         );
         exit 0;
