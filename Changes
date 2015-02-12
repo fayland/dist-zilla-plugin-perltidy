@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-Plugin-PerlTidy
 
+0.21    2015-02-12
+        no code changes
+
 0.20    2015-02-12
         include nst/nse options to cancel any st/se in perltidyrc (Michael Jemmeson)
 
