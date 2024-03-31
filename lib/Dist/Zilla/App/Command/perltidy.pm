@@ -7,6 +7,10 @@ use warnings;
 use Dist::Zilla::App -command;
 use Path::Iterator::Rule;
 use File::Copy;
+use Dist::Zilla::Path;
+use YAML;
+use Digest::SHA 'sha1_base64';
+use File::HomeDir;
 
 sub abstract {'perltidy your dist'}
 
@@ -94,7 +98,17 @@ sub execute {
         }
     );
 
+    my ( $total_count, $skip_count, %seen ) = ( 0, 0 );
+    my $seen_file = path( File::HomeDir->my_home, ".perltidychk" );
+    %seen = %{ Load $seen_file->slurp_raw } if $seen_file->exists;
+
     while ( my $file = $next->() ) {
+        $total_count++;
+        if ( $seen{$file}{ sha1_base64 path($file)->slurp_raw } ) {
+            $self->log_debug( 'Skipping unchanged %s', $file );
+            $skip_count++;
+            next;
+        }
         my $tidyfile = $file . '.tdy';
         $self->log_debug( 'Tidying %s', $file );
         if ( my $pid = fork() ) {
@@ -102,6 +116,7 @@ sub execute {
             $self->log_fatal( 'Child exited with nonzero status: %s', $? )
                 if $? > 0;
             File::Copy::move( $tidyfile, $file );
+            $seen{$file}{ sha1_base64 path($file)->slurp_raw } = 1;
             next;
         }
         $tidy->(
@@ -112,6 +127,10 @@ sub execute {
         );
         exit 0;
     }
+
+    $seen_file->spew( Dump \%seen );
+    $self->log_debug( 'Skipped %d out of %d files, tidied %d',
+        $skip_count, $total_count, $total_count - $skip_count );
 
     return 1;
 }
