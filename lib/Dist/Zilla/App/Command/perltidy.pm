@@ -77,7 +77,7 @@ sub execute {
                 $self->zilla->log_debug('Ignoring .build');
                 return 1;
             }
-            if ( $_[1] =~ qr/^[A-Za-z].*-[0-9.]+(-TRIAL)?$/ ) {
+            if ( $_[1] =~ qr/^[A-Za-z].*-[0-9._]+(-TRIAL)?$/ ) {
                 $self->zilla->log_debug('Ignoring dzil build tree');
                 return 1;
             }
