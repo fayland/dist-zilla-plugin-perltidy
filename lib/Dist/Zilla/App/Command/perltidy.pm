@@ -49,19 +49,16 @@ sub execute {
 
     # Verify that if a file is specified it is readable
     if ( defined $perltidyrc and not -r $perltidyrc ) {
-        $self->zilla->log_fatal(
-            [   "specified perltidyrc is not readable: %s ,\nNote: ~ and other shell expansions are not applicable",
-                $perltidyrc
-            ]
+        $self->log_fatal(
+            "specified perltidyrc is not readable: %s ,\nNote: ~ and other shell expansions are not applicable",
+            $perltidyrc
         );
     }
 
     if ( not exists $backends->{ $opt->{backend} } ) {
-        $self->zilla->log_fatal(
-            [   "specified backend not known, known backends are: %s ",
-                join q[,], sort keys %{$backends}
-            ]
-        );
+        $self->log_fatal(
+            "specified backend not known, known backends are: %s ",
+            join q[,], sort keys %{$backends} );
     }
 
     my $tidy = $backends->{ $opt->{backend} }->();
@@ -74,11 +71,11 @@ sub execute {
         sub {
             return if not -d $_;
             if ( $_[1] =~ qr/^\.build$/ ) {
-                $self->zilla->log_debug('Ignoring .build');
+                $self->log_debug('Ignoring .build');
                 return 1;
             }
             if ( $_[1] =~ qr/^[A-Za-z].*-[0-9._]+(-TRIAL)?$/ ) {
-                $self->zilla->log_debug('Ignoring dzil build tree');
+                $self->log_debug('Ignoring dzil build tree');
                 return 1;
             }
             return;
@@ -99,11 +96,10 @@ sub execute {
 
     while ( my $file = $next->() ) {
         my $tidyfile = $file . '.tdy';
-        $self->zilla->log_debug( [ 'Tidying %s', $file ] );
+        $self->log_debug( 'Tidying %s', $file );
         if ( my $pid = fork() ) {
             waitpid $pid, 0;
-            $self->zilla->log_fatal(
-                [ 'Child exited with nonzero status: %s', $? ] )
+            $self->log_fatal( 'Child exited with nonzero status: %s', $? )
                 if $? > 0;
             File::Copy::move( $tidyfile, $file );
             next;
@@ -118,6 +114,18 @@ sub execute {
     }
 
     return 1;
+}
+
+sub log_debug {
+    my ( $self, @log ) = @_;
+    return $self->zilla    #
+        ->log_debug( { prefix => '[PerlTidy] ' }, @log == 1 ? @log : \@log );
+}
+
+sub log_fatal {
+    my ( $self, @log ) = @_;
+    return $self->zilla    #
+        ->log_fatal( { prefix => '[PerlTidy] ' }, @log == 1 ? @log : \@log );
 }
 
 1;
