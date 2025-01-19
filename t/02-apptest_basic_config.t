@@ -9,18 +9,18 @@ use Test::More;
 
 use FindBin;
 use File::Spec::Functions qw( catdir rel2abs );
-use File::Temp qw( tempdir );
+use File::Temp            qw( tempdir );
 use File::Copy::Recursive qw( dircopy );
-use File::pushd qw( pushd );
+use File::pushd           qw( pushd );
 
 {
     my $result = eval { system( 'dzil', '-v' ); };
     plan skip_all => "Skip when dzil is not call-able.\n" if $result eq '-1';
 }
 
-my $root = catdir( rel2abs($FindBin::Bin), 'apptest', '02_basic_config' );
+my $root   = catdir( rel2abs($FindBin::Bin), 'apptest', '02_basic_config' );
 my $tmpdir = tempdir( CLEANUP => 1 );
-my $bdir = catdir( $tmpdir, '02_basic_config' );
+my $bdir   = catdir( $tmpdir, '02_basic_config' );
 
 note explain { root => $root, tmpdir => $tmpdir, bdir => $bdir };
 

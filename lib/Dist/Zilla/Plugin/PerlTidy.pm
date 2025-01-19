@@ -3,12 +3,9 @@ package Dist::Zilla::Plugin::PerlTidy;
 # ABSTRACT: PerlTidy in Dist::Zilla
 
 use Moose;
-with (
-    'Dist::Zilla::Role::FileMunger',
-    'Dist::Zilla::Role::FileFinderUser' => {
-        default_finders => [ ':InstallModules', ':ExecFiles', ':TestFiles' ],
-    },
-);
+with 'Dist::Zilla::Role::FileMunger',
+    'Dist::Zilla::Role::FileFinderUser' =>
+    { default_finders => [ ':InstallModules', ':ExecFiles', ':TestFiles' ], };
 
 has 'perltidyrc' => ( is => 'ro' );
 
@@ -31,7 +28,7 @@ sub munge_file {
     my ( $self, $file ) = @_;
 
     return $self->_munge_perl($file) if $file->name =~ /\.(?:pm|pl|t)$/i;
-    return if -B $file->name; # do not try to read binary file
+    return if -B $file->name;    # do not try to read binary file
     return $self->_munge_perl($file) if $file->content =~ /^#!.*\bperl\b/;
     return;
 }
@@ -40,7 +37,9 @@ sub _munge_perl {
     my ( $self, $file ) = @_;
 
     return if ref($file) eq 'Dist::Zilla::File::FromCode';
-    return if $file->name and $file->name eq 't/00-compile.t'; # simply skip Dist::Zilla::Plugin::Test::Compile (RT 88601)
+
+    # simply skip Dist::Zilla::Plugin::Test::Compile (RT 88601)
+    return if $file->name and $file->name eq 't/00-compile.t';
 
     my $source = $file->content;
 
